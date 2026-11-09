@@ -1,5 +1,5 @@
 import pandas as pd
-import multiprocessing
+import multiprocessing as mp
 import threading
 import time
 
@@ -34,14 +34,14 @@ def multiprocessing(df):
     Implementação usando Multiprocessing.
     Divide o DataFrame em chunks e processa cada chunk em um processo separado.
     """
-    num_cores = multiprocessing.cpu_count()
+    num_cores = mp.cpu_count()
     chunks = []
     for i in range(num_cores):
         # Pega cada i-ésimo elemento para distribuir os dados
         chunk = df.iloc[i::num_cores]
         chunks.append(chunk)
 
-    with multiprocessing.Pool(processes=num_cores) as pool:
+    with mp.Pool(processes=num_cores) as pool:
         results = pool.map(process_data, chunks)
 
     # Agregar resultados dos chunks
@@ -63,7 +63,7 @@ def multithreading(df):
     Implementação usando Multithreading.
     Divide o DataFrame em chunks e processa cada chunk em uma thread separada.
     """
-    num_threads = multiprocessing.cpu_count()
+    num_threads = mp.cpu_count()
     chunks = []
     for i in range(num_threads):
         chunk = df.iloc[i::num_threads]
